@@ -1,8 +1,8 @@
 {
-  "name": "Altesse-X1",
+  "name": "✧ 𝕏𝕖𝕝𝕚𝕣𝕒✧",
   "description": "bot développé par *Altesse*, votre assistance en cyber sécurité ",
-  "logo": "https://files.catbox.moe/e10hd3.jpg",
-  "keywords": ["Altesse-x1"],
+  "logo": "https://files.catbox.moe/w4lq0p.jpg",
+  "keywords": ["✧ 𝕏𝕖𝕝𝕚𝕣𝕒✧"],
   "success_url": "/",
 
     "stack": "container",
@@ -109,14 +109,14 @@
     "BOT_NAME": {
       "description": "Type here the bot name.",
       "required": false,
-      "value": "Royal-Md"
+      "value": "✧ 𝕏𝕖𝕝𝕚𝕣𝕒✧"
 
       }, 
     
     "ALIVE_IMG": {
       "description": "put here the bot Menu url if you don't have you can use this public url.",
       "required": true,
-      "value": "https://files.catbox.moe/e10hd3.jpg" 
+      "value": "https://files.catbox.moe/w4lq0p.jpg" 
       },
 
     "DELETE_LINK": {
