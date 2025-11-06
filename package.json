@@ -4,7 +4,7 @@
   "version": "3.2.0",
   "description": "Best WhatsApp Bot",
   "main": "index.js",
-  "type": "commonjs",
+  "type": "module",
   "scripts": {
     "start": "pm2 start index.js --attach --name zokou",
     "zokou": "pm2 start index.js --attach --name zokou",
