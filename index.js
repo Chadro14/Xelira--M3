@@ -37,8 +37,8 @@ import fetch from 'node-fetch';
 import { spawn, exec, execSync } from 'child_process';
 import { Boom } from '@hapi/boom'; 
 
-// Import de votre configuration (DOIT avoir l'extension .js)
-import configuration from './settings/config.js'; 
+// Import de votre configuration (CHEMIN CORRIGÉ pour la RACINE)
+import configuration from './config.js'; 
 
 // Import de vos bibliothèques locales (DOIT avoir l'extension .js)
 import { color } from './library/color.js'; 
@@ -265,9 +265,6 @@ const clientStart = async() => {
         };
         
         if (data && returnAsFilename && !filename) {
-            // Note: __dirname n'est pas disponible directement en ESM, mais path.join peut fonctionner
-            // si vous n'avez pas besoin du chemin absolu exact. 
-            // J'ai laissé un chemin relatif simple pour éviter les erreurs.
             (filename = './tmp/' + new Date().getTime() + '.' + type.ext);
             await fs.promises.writeFile(filename, data);
         }
