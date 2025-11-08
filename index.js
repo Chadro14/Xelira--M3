@@ -40,14 +40,12 @@ import { Boom } from '@hapi/boom';
 // Import de votre configuration (CHEMIN CORRIGÉ pour la RACINE)
 import configuration from './config.js'; 
 
-// --- DÉFINITION INTERNE de la fonction color (REMPLACEMENT) ---
-// Cette fonction empêche le crash et retourne simplement le texte sans couleur.
+// --- DÉFINITION INTERNE de la fonction color (REMPLACEMENT pour fichier manquant) ---
 const color = (text, color) => text; 
 
 // Import de vos bibliothèques locales (CHEMINS CORRIGÉS pour la RACINE)
-// Le fichier color.js est remplacé par la fonction ci-dessus.
-import { smsg, sleep, getBuffer } from './myfunction.js'; // <-- CORRIGÉ : Retire ./library/
-import { imageToWebp, videoToWebp, writeExifImg, writeExifVid, addExif } from './exif.js'; // <-- CORRIGÉ : Retire ./library/
+import { smsg, sleep, getBuffer } from './myfunction.js'; 
+import { imageToWebp, videoToWebp, writeExifImg, writeExifVid, addExif } from './exif.js'; 
 
 // --- Initialisation ---
 const listcolor = ['cyan', 'magenta', 'green', 'yellow', 'blue'];
@@ -63,7 +61,6 @@ const question = (text) => {
         output: process.stdout
     });
     return new Promise((resolve) => {
-        // La fonction color() est appelée ici, elle utilise la définition interne.
         rl.question(color(text, randomColor), (answer) => {
             resolve(answer);
             rl.close();
@@ -128,11 +125,10 @@ const clientStart = async() => {
             if (mek.key.id.startsWith('laurine-') && mek.key.id.length === 12) return;
             
             const m = smsg(client, mek, store); 
-            // Correction de l'import de handler
+            // Correction de l'import de handler (chemin corrigé)
             try {
-                // Utilisation d'import dynamique pour les modules ES
-                const handler = await import("./handler.js"); // Chemin corrigé
-                handler.default(client, m, chatUpdate, store); // Si handler.js exporte par défaut
+                const handler = await import("./handler.js"); 
+                handler.default(client, m, chatUpdate, store); 
             } catch (handlerErr) {
                 console.error("Erreur lors du chargement ou de l'exécution de handler.js:", handlerErr);
             }
@@ -162,8 +158,8 @@ const clientStart = async() => {
     client.public = configuration.status.public; 
     
     client.ev.on('connection.update', (update) => {
-        // La fonction konek doit aussi être adaptée aux modules ES et à votre configuration
-        import('./connection.js') // <-- CORRIGÉ : Retire ./library/
+        // Chemin de connection.js corrigé vers la racine
+        import('./connection.js') 
             .then(module => module.konek({ client, update, clientStart, DisconnectReason, Boom })) 
             .catch(err => console.error("Erreur lors du chargement de connection.js:", err));
     });
@@ -270,7 +266,6 @@ const clientStart = async() => {
         };
         
         if (data && returnAsFilename && !filename) {
-            // Note: On utilise un chemin relatif simple car __dirname n'est pas disponible en ESM.
             (filename = './tmp/' + new Date().getTime() + '.' + type.ext);
             await fs.promises.writeFile(filename, data);
         }
@@ -352,12 +347,11 @@ const ignoredErrors = [
     'value not found'
 ];
 
-// Gestion des mises à jour de fichier en ESM : on ne peut pas utiliser require.resolve et require.cache
-// Le moyen le plus simple est de forcer un redémarrage si le fichier principal change.
+// Gestion des mises à jour de fichier en ESM : on utilise process.exit(0)
 let file = path.resolve(process.argv[1]); 
 fs.watchFile(file, () => { 
   console.log(color(`Le fichier ${file} a été modifié, redémarrage du bot...`, 'yellow'));
-  process.exit(0); // Quitte le processus pour qu'il soit redémarré par l'hébergeur/PM2
+  process.exit(0); 
 });
 
 process.on('unhandledRejection', reason => {
