@@ -1,10 +1,10 @@
-import {
-    getContentType,
-    jidDecode,
-    proto,
-    delay
-} from "@whiskeysockets/baileys";
+// myfunction.js
+
+import * as baileys from "@whiskeysockets/baileys";
 import { default as fetch } from "node-fetch";
+
+// Déclaration interne des fonctions de Baileys utilisées
+const { getContentType, jidDecode, proto, delay } = baileys;
 
 /**
  * Attente (sleep)
@@ -40,7 +40,7 @@ export const getBuffer = async (url, options) => {
 export const smsg = (client, m, store) => {
     if (!m) return m;
 
-    let M = proto.WebMessageInfo;
+    let M = proto.WebMessageInfo; 
     m = M.fromObject(m);
 
     // Simplification basique
