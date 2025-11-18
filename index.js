@@ -1,5 +1,6 @@
 // index.js
 
+// Importation principale de Baileys : on retire browsers, proto, delay, etc. de la liste pour éviter les conflits
 import {
     default as makeWASocket,
     prepareWAMessageMedia,
@@ -12,20 +13,20 @@ import {
     generateWAMessageContent,
     generateWAMessage,
     jidDecode,
-    proto,
-    delay,
     relayWAMessage,
-    getContentType,
-    generateMessageTag,
     getAggregateVotesInPollMessage,
     downloadContentFromMessage,
     fetchLatestWaWebVersion,
     interactiveMessage,
     makeCacheableSignalKeyStore,
-    browsers,
     generateForwardMessageContent,
     messageRetryMap
 } from "@whiskeysockets/baileys";
+
+// Import du paquet complet pour accéder aux utilitaires internes (comme browsers, proto, delay, getContentType)
+import * as baileys from "@whiskeysockets/baileys";
+const { proto, delay, getContentType, browsers } = baileys;
+
 import pino from 'pino';
 import FileType from 'file-type'; 
 import readline from "readline";
@@ -88,7 +89,7 @@ const clientStart = async() => {
         logger: pino({ level: "silent" }), 
         printQRInTerminal: configuration.status.terminal, 
         auth: state,
-        browser: browsers.ubuntu('Chrome'), 
+        browser: browsers.ubuntu('Chrome'), // Utilise browsers du destructuring
     });
 
     if (configuration.setPair && !client.authState.creds.registered) { 
@@ -370,3 +371,4 @@ process.stderr.write = function (msg, encoding, fd) {
     if (typeof msg === 'string' && ignoredErrors.some(e => msg.includes(e))) return;
     originalStderrWrite.apply(process.stderr, arguments);
 };
+    
