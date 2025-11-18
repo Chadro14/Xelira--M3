@@ -42,7 +42,20 @@ import { Boom } from '@hapi/boom';
 import configuration from './config.js'; 
 
 // --- DÉFINITION INTERNE de la fonction color (REMPLACEMENT pour fichier manquant) ---
-const color = (text, color) => text; 
+const color = (text, color) => {
+    const codes = {
+        reset: '\x1b[0m',
+        red: '\x1b[31m',
+        green: '\x1b[32m',
+        yellow: '\x1b[33m',
+        blue: '\x1b[34m',
+        magenta: '\x1b[35m',
+        cyan: '\x1b[36m'
+    };
+
+    const code = codes[color] || codes.reset;
+    return code + text + codes.reset;
+}; 
 
 // Import de vos bibliothèques locales (CHEMINS CORRIGÉS pour la RACINE)
 import { smsg, sleep, getBuffer } from './myfunction.js'; 
@@ -126,7 +139,7 @@ const clientStart = async() => {
             if (mek.key.id.startsWith('laurine-') && mek.key.id.length === 12) return;
             
             const m = smsg(client, mek, store); 
-            // Correction de l'import de handler (chemin corrigé)
+            // Import de handler (chemin corrigé pour la RACINE)
             try {
                 const handler = await import("./handler.js"); 
                 handler.default(client, m, chatUpdate, store); 
@@ -159,7 +172,7 @@ const clientStart = async() => {
     client.public = configuration.status.public; 
     
     client.ev.on('connection.update', (update) => {
-        // Chemin de connection.js corrigé vers la racine
+        // Import de connection.js (chemin corrigé pour la RACINE)
         import('./connection.js') 
             .then(module => module.konek({ client, update, clientStart, DisconnectReason, Boom })) 
             .catch(err => console.error("Erreur lors du chargement de connection.js:", err));
@@ -371,4 +384,4 @@ process.stderr.write = function (msg, encoding, fd) {
     if (typeof msg === 'string' && ignoredErrors.some(e => msg.includes(e))) return;
     originalStderrWrite.apply(process.stderr, arguments);
 };
-    
+                
