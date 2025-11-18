@@ -1,3 +1,5 @@
+// exif.js
+
 import { Sticker } from 'wa-sticker-formatter';
 
 // Fonctions pour créer des stickers et ajouter des métadonnées EXIF
