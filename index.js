@@ -1,6 +1,6 @@
 // index.js
 
-// Importation principale de Baileys : on retire browsers, proto, delay, etc. de la liste pour éviter les conflits
+// Importation principale de Baileys : on retire les exports nommés instables (interactiveMessage, browsers, proto, delay, getContentType, etc.)
 import {
     default as makeWASocket,
     prepareWAMessageMedia,
@@ -17,13 +17,12 @@ import {
     getAggregateVotesInPollMessage,
     downloadContentFromMessage,
     fetchLatestWaWebVersion,
-    interactiveMessage,
     makeCacheableSignalKeyStore,
     generateForwardMessageContent,
     messageRetryMap
 } from "@whiskeysockets/baileys";
 
-// Import du paquet complet pour accéder aux utilitaires internes (comme browsers, proto, delay, getContentType)
+// Import du paquet complet pour accéder aux utilitaires internes (comme browsers, proto, delay, getContentType) de manière stable
 import * as baileys from "@whiskeysockets/baileys";
 const { proto, delay, getContentType, browsers } = baileys;
 
@@ -39,9 +38,10 @@ import { spawn, exec, execSync } from 'child_process';
 import { Boom } from '@hapi/boom'; 
 
 // Import de votre configuration (CHEMIN CORRIGÉ pour la RACINE)
+// VEUILLEZ VOUS ASSURER QUE VOTRE FICHIER CONFIG.JS EST AUSSI MIS À JOUR EN ESM !
 import configuration from './config.js'; 
 
-// --- DÉFINITION INTERNE de la fonction color (REMPLACEMENT pour fichier manquant) ---
+// --- DÉFINITION INTERNE de la fonction color ---
 const color = (text, color) => {
     const codes = {
         reset: '\x1b[0m',
@@ -384,4 +384,4 @@ process.stderr.write = function (msg, encoding, fd) {
     if (typeof msg === 'string' && ignoredErrors.some(e => msg.includes(e))) return;
     originalStderrWrite.apply(process.stderr, arguments);
 };
-                
+                                          
